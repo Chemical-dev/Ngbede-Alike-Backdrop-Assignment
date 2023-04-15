@@ -8,6 +8,7 @@ const resolvers = {
     Query: {
         accountDetail: async(_, args) => {
             const accountNumber = args.input.accountNumber;
+            const bankCode =args.input.bankCode;
     
             try {
                 const account = await Account.findOne({
@@ -29,7 +30,7 @@ const resolvers = {
                     console.log("query output:", accountObj1);
                     return accountObj1;
                 }else{
-                    const result = await PaystackService.getAccounts();
+                    const result = await PaystackService.getAccounts(accountNumber, bankCode);
                     if (!result) return "error message";
 
                     const accountObj = {
@@ -50,6 +51,7 @@ const resolvers = {
     Mutation: {
         validateAccount: async(_, args) => {
             const accountNumber = args.input.accountNumber;
+            const bankCode =args.input.bankCode;
 
             try {
                 const accountCheck = await Account.findOne({
@@ -61,7 +63,7 @@ const resolvers = {
 
                  if (accountCheck) {throwCustomError('Account Alredy exists', ErrorTypes.ALREADY_EXISTS);}
 
-                const result = await PaystackService.getAccounts();
+                const result = await PaystackService.getAccounts(accountNumber, bankCode);
                 if(result == null || !result){return AccountAlreadyExistsError;}
                     const distance = levenshtein(args.input.accountName.toLowerCase(), result.account_name.toLowerCase());
 
