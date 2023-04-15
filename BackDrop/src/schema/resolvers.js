@@ -17,7 +17,6 @@ const resolvers = {
                        logging: false,
                 });
                 
-                console.log("query output:", account);
                 if (account) {
                     const accountObj1 = {
                         accountName:account.accountName,
@@ -26,7 +25,6 @@ const resolvers = {
                         verified:account.verified
                     };
                      
-                    console.log("query output:", accountObj1);
                     return accountObj1;
                 }else{
                     const result = await PaystackService.getAccounts(accountNumber, bankCode);
@@ -60,7 +58,7 @@ const resolvers = {
                     logging: false,
                 });
 
-                 if (accountCheck) {throwCustomError('Account Alredy exists', ErrorTypes.ALREADY_EXISTS);}
+                 if (accountCheck) {throwCustomError('Account Already exists', ErrorTypes.ALREADY_EXISTS);}
 
                 const result = await PaystackService.getAccounts(accountNumber, bankCode);
                 if(result == null || !result){return AccountAlreadyExistsError;}
@@ -76,7 +74,7 @@ const resolvers = {
                     
                         const newAccount = await Account.create(accountObj);
                         newAccount.save();
-                         console.log("new account:", newAccount);
+
                         if (!newAccount){return AccountAlreadyExistsError;}
                         return accountObj;
                 
