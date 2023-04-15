@@ -1,9 +1,7 @@
-import UserList  from '../../data.js';
 import PaystackService from '../services/paystack-service.js';
 import levenshtein from 'levenshtein';
 import Account from '../model/acccount.js';
 import  AccountAlreadyExistsError from '../utils/util.js';
-import { GraphQLError } from 'graphql';
 import throwCustomError, { ErrorTypes, } from '../utils/util.js';
 
 const resolvers = {
