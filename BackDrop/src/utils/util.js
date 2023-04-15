@@ -18,13 +18,19 @@ export const ErrorTypes = {
     }
 }
 
-export default (errorMessage, errorType) =>{
-    throw new GraphQLError(errorMessage, {
-        extensions: {
-            code:errorType.errorCode,
-            http:{
-                status:errorType.statusError
-            },
-        },
-    });
-};
+export const toSentenceCase = (str) => {
+    // Convert the string to lowercase and split by word
+    const words = str.toLowerCase().split(' ');
+    
+    // Loop through each word and capitalize the first letter
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+    
+    // Join the words back into a sentence
+    const sentence = words.join(' ');
+    
+    // Capitalize the first letter of the sentence
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }
+  
