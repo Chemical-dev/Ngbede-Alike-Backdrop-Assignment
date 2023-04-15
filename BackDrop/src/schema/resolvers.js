@@ -54,14 +54,14 @@ const resolvers = {
             const bankCode =args.input.bankCode;
 
             try {
-                const accountCheck = await Account.findOne({
-                    where: {
-                     accountNumber
-                    },
-                    logging: false,
-                });
+                // const accountCheck = await Account.findOne({
+                //     where: {
+                //      accountNumber
+                //     },
+                //     logging: false,
+                // });
 
-                 if (accountCheck) {throwCustomError('Account Alredy exists', ErrorTypes.ALREADY_EXISTS);}
+                //  if (accountCheck) {throwCustomError('Account Alredy exists', ErrorTypes.ALREADY_EXISTS);}
 
                 const result = await PaystackService.getAccounts(accountNumber, bankCode);
                 if(result == null || !result){return AccountAlreadyExistsError;}

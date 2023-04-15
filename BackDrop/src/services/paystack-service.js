@@ -1,9 +1,12 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 class PaystackService {
-    static async getAccounts(account_number, bank_code, auth) {
+    static async getAccounts(accountNumber, bankCode) {
+
         try {
-            const url = `https://api.paystack.co/bank/resolve?account_number=${account_number}&bank_code=${bank_code}`;
+            const url = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
             const paystackResponse = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${process.env.PAYSTACK_TOKEN}`,
@@ -24,4 +27,3 @@ class PaystackService {
 };
 export default PaystackService;
 
-//sk_test_43cfd2db44afe7f88a388ff2ca6c9c101143a14c

@@ -2,7 +2,6 @@ import { ApolloServer } from 'apollo-server';
 import typeDefs from './src/schema/type-defs.js';
 import resolvers from './src/schema/resolvers.js';
 import sequelize from './src/model/db.js';
-import { GraphQLSchema } from 'graphql';
 
 const overrideError = (err) => {
     if (err.message.startsWith('Database Error: ')) {
