@@ -16,18 +16,18 @@ const resolvers = {
                        },
                        logging: false,
                 });
-                
+
                 if (account) {
-                    const accountObj1 = {
+                    const firstAccountObj = {
                         accountName:account.accountName,
                         accountNumber:account.accountNumber,
                         bankCode:account.bankCode,
                         verified:account.verified
                     };
                      
-                    return accountObj1;
+                    return firstAccountObj;
                 }else{
-                    const result = await PaystackService.getAccounts(accountNumber, bankCode);
+                    const result = await PaystackService.getAccount(accountNumber, bankCode);
                     if (!result) { return new CustomError(ErrorTypes.INVALID_CREDENTIALS, 400);}
 
                     const accountObj = {
@@ -60,7 +60,7 @@ const resolvers = {
 
                  if (accountCheck) {return new CustomError(ErrorTypes.ALREADY_EXISTS, 409);}
 
-                const result = await PaystackService.getAccounts(accountNumber, bankCode);
+                const result = await PaystackService.getAccount(accountNumber, bankCode);
                 if(result == null || !result){return new CustomError(ErrorTypes.INVALID_CREDENTIALS, 400);}
                     const distance = levenshtein(args.input.accountName.toLowerCase(), result.account_name.toLowerCase());
 

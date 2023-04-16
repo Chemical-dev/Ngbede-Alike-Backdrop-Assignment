@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 class PaystackService {
-    static async getAccounts(accountNumber, bankCode) {
+    static async getAccount(accountNumber, bankCode) {
 
         try {
             const url = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
