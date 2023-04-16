@@ -1,7 +1,7 @@
 import PaystackService from '../services/paystack-service.js';
 import levenshtein from 'levenshtein';
 import Account from '../model/acccount.js';
-import  {toSentenceCase} from '../utils/util.js';
+import  { toSentenceCase, CustomError, ErrorTypes } from '../utils/util.js';
 
 const resolvers = {
     Query: {
@@ -28,7 +28,7 @@ const resolvers = {
                     return accountObj1;
                 }else{
                     const result = await PaystackService.getAccounts(accountNumber, bankCode);
-                    if (!result) return "error message";
+                    if (!result) { return new CustomError(ErrorTypes.INVALID_CREDENTIALS, 400);}
 
                     const accountObj = {
                         accountName:result.account_name,
@@ -40,7 +40,7 @@ const resolvers = {
                 }
 
             } catch (error) {
-                console.log(error);
+                throw new CustomError(error.message, 500);
             }  
         },
     },
@@ -58,13 +58,13 @@ const resolvers = {
                     logging: false,
                 });
 
-                 if (accountCheck) {throwCustomError('Account Already exists', ErrorTypes.ALREADY_EXISTS);}
+                 if (accountCheck) {return new CustomError(ErrorTypes.ALREADY_EXISTS, 409);}
 
                 const result = await PaystackService.getAccounts(accountNumber, bankCode);
-                if(result == null || !result){return AccountAlreadyExistsError;}
+                if(result == null || !result){return new CustomError(ErrorTypes.INVALID_CREDENTIALS, 400);}
                     const distance = levenshtein(args.input.accountName.toLowerCase(), result.account_name.toLowerCase());
 
-                    if (distance > 3) {return AccountAlreadyExistsError;}
+                    if (distance > 3) {return new CustomError(ErrorTypes.UNABLE_TO_VALIDATE_ACCOUNT_NAME, 200);}
                         const accountObj = {
                             accountName: toSentenceCase(result.account_name),
                             accountNumber:result.account_number,
@@ -75,11 +75,11 @@ const resolvers = {
                         const newAccount = await Account.create(accountObj);
                         newAccount.save();
 
-                        if (!newAccount){return AccountAlreadyExistsError;}
+                        if (!newAccount){return new CustomError(ErrorTypes.ACCOUNT_VALIDATION_UNSUCCESSFUL, 409);}
                         return accountObj;
                 
             } catch (error) {
-                return AccountAlreadyExistsError;;
+                throw new CustomError(error.message, 500);
             }
         }
     }
